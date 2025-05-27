@@ -16,15 +16,35 @@ document.addEventListener("DOMContentLoaded", () => {
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
         const activityCard = document.createElement("div");
-        activityCard.className = "activity-card";
+        activityCard.className = "participant-card";
 
         const spotsLeft = details.max_participants - details.participants.length;
+
+        // Create a pretty participants section
+        let participantsHTML = "";
+        if (details.participants.length > 0) {
+          participantsHTML = `
+            <div style="margin-top: 10px;">
+              <strong>Participants:</strong>
+              <ul style="margin: 8px 0 0 18px; padding: 0;">
+                ${details.participants.map(email => `<li style="margin-bottom: 3px; color: #333;">${email}</li>`).join("")}
+              </ul>
+            </div>
+          `;
+        } else {
+          participantsHTML = `
+            <div style="margin-top: 10px;">
+              <strong>Participants:</strong> <span style="color: #888;">None yet</span>
+            </div>
+          `;
+        }
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          ${participantsHTML}
         `;
 
         activitiesList.appendChild(activityCard);
